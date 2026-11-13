@@ -21,7 +21,31 @@ Hands-free input provides an alternative way to interact with common desktop tas
 
 ## System architecture
 
-![Airclick system architecture](docs/architecture-overview.svg)
+```mermaid
+flowchart TB
+    subgraph GestureRuntime["Gesture-control runtime"]
+        Camera["Camera frames"] --> CV["OpenCV capture"]
+        CV --> Hands["MediaPipe hand landmarks"]
+        Hands --> Rules["Gesture_Controller.py<br/>gesture state and rules"]
+        Rules --> Mouse["PyAutoGUI<br/>pointer and click actions"]
+        Rules --> Audio["Pycaw / COM<br/>Windows audio"]
+        Rules --> Brightness["screen-brightness-control"]
+    end
+
+    subgraph VoiceRuntime["Voice and chat runtime"]
+        Mic["Microphone"] --> Speech["SpeechRecognition"]
+        BrowserUI["Eel web chat UI"] --> Router["Proton.py<br/>command router"]
+        Speech --> Router
+        Router --> Desktop["OS and browser commands"]
+        Router --> External["Configured weather / news services"]
+        Router --> TTS["SAPI5 text-to-speech"]
+        Router --> BrowserUI
+    end
+
+    User["Desktop user"] --> Camera
+    User --> Mic
+    User --> BrowserUI
+```
 
 ### How the workflow operates
 
