@@ -1,39 +1,63 @@
-<p align="center"><img src="docs/assets/banner.svg" alt="Airclick — Hands, voice, and a new way to navigate." width="100%"></p>
+# Airclick
 
-<p align="center"><img src="docs/assets/badges/python.svg" alt="python" height="28"> <img src="docs/assets/badges/opencv.svg" alt="opencv" height="28"> <img src="docs/assets/badges/mediapipe.svg" alt="mediapipe" height="28"> <img src="docs/assets/badges/pyautogui.svg" alt="pyautogui" height="28"> <img src="docs/assets/badges/eel.svg" alt="eel" height="28"></p>
-
-<p align="center"><strong>A desktop-interaction prototype that translates hand landmarks and voice commands into mouse, media, and assistant actions.</strong></p>
+**Gesture and voice-controlled desktop interaction**
 
 ## Overview
 
-A desktop-interaction prototype that translates hand landmarks and voice commands into mouse, media, and assistant actions.
+Airclick is a desktop-control prototype that combines camera-based hand tracking, speech commands, and a small web-based interface. It uses MediaPipe and OpenCV to interpret visual input, desktop automation packages to trigger system actions, and speech libraries for voice interaction.
 
 ### Why it matters
 
-Airclick explores multimodal accessibility and interaction by connecting camera and microphone input to practical desktop controls.
+Hands-free input provides an alternative way to interact with common desktop tasks. Airclick explores how computer vision and voice interfaces can be connected to real system controls in a modular Python application.
 
-## Key features
+## Key capabilities
 
-- MediaPipe hand-landmark tracking
-- Gesture-to-mouse and system-control mapping
-- Voice commands and spoken responses
-- Eel-based chat interface
+- Uses OpenCV to capture video frames for live interaction.
+- Uses MediaPipe hand landmarks to recognize gesture patterns.
+- Maps selected gestures to mouse and system-control actions.
+- Recognizes speech commands and can provide spoken responses.
+- Includes an Eel-based interface for assistant-style interactions.
+- Integrates with operating-system audio and brightness controls where supported.
 
-## Architecture
+## System architecture
 
-```mermaid
-flowchart TB
-  A[Camera] --> B[MediaPipe landmarks]
-  B --> C[Gesture rules]
-  C --> D[Desktop actions]
-  E[Voice or chat] --> F[Command handling]
-  F --> G[Eel UI + spoken response]
-```
+![Airclick system architecture](docs/architecture-overview.svg)
+
+### How the workflow operates
+
+The gesture path acquires camera frames, extracts hand landmarks, interprets those landmarks through gesture rules, and calls desktop automation functions. The voice path receives microphone input, recognizes a command, and routes it to the appropriate action or response.
+
+The project depends on desktop-specific APIs and should be tested in a controlled environment because automated mouse, keyboard, and system controls affect the active session.
 
 ## Technology stack
 
-**python** · **opencv** · **mediapipe** · **pyautogui** · **eel**
+| Technology | Purpose |
+| --- | --- |
+| **Python** | Application and control logic |
+| **OpenCV / MediaPipe** | Camera input and hand landmarks |
+| **PyAutoGUI / pynput** | Mouse and keyboard automation |
+| **SpeechRecognition / pyttsx3** | Speech-to-text and text-to-speech |
+| **Eel** | Web-based desktop interaction UI |
+| **Pycaw / brightness control** | Operating-system controls |
+
+## Repository structure
+
+```text
+src/             Gesture, assistant, and desktop-control modules
+demo_media/      Available demonstration media
+requirements.txt Python dependency versions
+README.md        Documentation and setup
+```
 
 ## Getting started
 
-Use a compatible Windows Python environment with a camera and microphone. Install `requirements.txt`, then choose either the gesture controller or voice application. Test only in a safe desktop session with an emergency stop available.
+```bash
+python -m venv .venv
+# Activate the environment for your operating system.
+pip install -r requirements.txt
+# Inspect src/ for the gesture and voice entry points.
+```
+
+## Notes and prerequisites
+
+Some audio and brightness packages are Windows-oriented. A camera and microphone are needed for the respective features, and the pinned dependencies may require a compatible Python version. Test with an emergency stop or isolated desktop session.
